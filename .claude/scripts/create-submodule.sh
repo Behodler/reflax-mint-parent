@@ -301,6 +301,9 @@ EOF
 # Initialize MutableChangeRequests.json
 echo '{"requests": []}' > MutableChangeRequests.json
 
+# Initialize SiblingChangeRequests.json
+echo '{"requests": []}' > SiblingChangeRequests.json
+
 # Create the empty Solidity contract
 echo "Creating contract: src/$PASCAL_NAME.sol"
 cat > "src/$PASCAL_NAME.sol" << EOF

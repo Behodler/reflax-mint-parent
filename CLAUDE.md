@@ -63,7 +63,7 @@ When a submodule needs changes in a sibling dependency:
 
 2. **Submodule stops work** and informs user
 
-3. **User runs** `.claude/commands/pop-change-requests.sh <submodule>`
+3. **User runs** `.claude/scripts/pop-change-requests.sh <submodule>`
    - Transfers requests to target submodules' `SiblingChangeRequests.json`
    - Clears source submodule's request queue
 
@@ -75,39 +75,35 @@ When a submodule needs changes in a sibling dependency:
    - Run `.claude/commands/update-mutable-dependency.sh <dependency-name>`
    - Continues development with updated interfaces
 
-## Custom Commands
+## Command System
+
+### Command Documentation
+
+Commands are documented in markdown files located in `.claude/commands/`. Each command markdown file:
+- Describes the command's purpose and functionality
+- Documents required and optional arguments
+- Provides usage examples
+- Explains the command's workflow and effects
+
+The actual shell scripts are located in `.claude/scripts/` for better organization.
 
 ### Parent-Level Commands
 
+Command documentation can be found in:
+- `.claude/commands/create-submodule.md` - Creates new Foundry submodules
+- `.claude/commands/pop-change-requests.md` - Processes change requests
+
 #### create-submodule
-Creates a new Foundry submodule with dependency management structure.
+**Script:** `.claude/scripts/create-submodule.sh <name>`
+**Documentation:** `.claude/commands/create-submodule.md`
 
-**Usage:** `.claude/commands/create-submodule.sh <name>`
+Creates a new Foundry submodule with dependency management structure, including directory setup, git initialization, and command scaffolding.
 
-**Example:** `.claude/commands/create-submodule.sh TokenVault`
+#### pop-change-requests  
+**Script:** `.claude/scripts/pop-change-requests.sh <submodule-name>`
+**Documentation:** `.claude/commands/pop-change-requests.md`
 
-This command will:
-1. Create a new directory with lowercase naming (e.g., `tokenvault`)
-2. Initialize a git repository and Foundry project
-3. Create dependency directories (`lib/mutable/` and `lib/immutable/`)
-4. Set up submodule-specific commands for dependency management
-5. Create an empty Solidity contract with PascalCase naming (e.g., `TokenVault.sol`)
-6. Generate an enhanced CLAUDE.md file with dependency management rules
-7. Initialize `MutableChangeRequests.json` for change tracking
-8. Register the submodule with the parent repository
-
-#### pop-change-requests
-Processes change requests from a submodule and distributes them to target dependencies.
-
-**Usage:** `.claude/commands/pop-change-requests.sh <submodule-name>`
-
-**Example:** `.claude/commands/pop-change-requests.sh tokenvault`
-
-This command:
-1. Reads `MutableChangeRequests.json` from the specified submodule
-2. Transfers requests to target submodules' `SiblingChangeRequests.json`
-3. Processes requests in FIFO order
-4. Clears the source submodule's request queue
+Processes and distributes change requests from a submodule to target dependencies in FIFO order.
 
 ### Submodule-Level Commands
 
@@ -132,7 +128,8 @@ Each submodule has these commands in `.claude/commands/`:
 ## Working with Submodules
 
 ### Adding a new submodule
-Use the custom command: `.claude/commands/create-submodule.sh <name>`
+Refer to the command documentation at `.claude/commands/create-submodule.md` and run:
+`.claude/scripts/create-submodule.sh <name>`
 
 ### Cloning with submodules
 `git clone --recursive <repo-url>`

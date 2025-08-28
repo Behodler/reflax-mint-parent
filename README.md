@@ -1,0 +1,3 @@
+This is a new approach to devlopement of smart contract which leverages agentic AI by minimizing context window. Each major contract gets its own directory with a CLAUDE.md file. Each submodule is registered with product owner. But this parent repo is not. Also integration testing requires the creation of new repos with submodule imports.
+
+When work is done on a feature, CLAUDE is run from within the submodules and has no acces to the sibling submodules. If one submodule has dependencies on a sibling and a feature requires a change, the agent is tasked to make a note of this and pause the story until a human has taken action.

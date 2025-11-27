@@ -1,3 +1,30 @@
 [submodule "minter"]
 	path = minter
 	url = ./minter
+[submodule "asset-mapper"]
+	path = asset-mapper
+	url = ./asset-mapper
+[submodule "vault"]
+	path = vault
+	url = ./vault
+[submodule "price-tilter"]
+	path = price-tilter
+	url = ./price-tilter
+[submodule "managed-liquidity"]
+	path = managed-liquidity
+	url = ./managed-liquidity
+[submodule "flax-token"]
+	path = flax-token
+	url = ./flax-token
+[submodule "behodler3-tokenlaunch"]
+	path = behodler3-tokenlaunch
+	url = ./behodler3-tokenlaunch
+[submodule "deployment-staging"]
+	path = deployment-staging
+	url = ./deployment-staging
+[submodule "yieldstrategyrouter"]
+	path = yieldstrategyrouter
+	url = ./yieldstrategyrouter
+[submodule "phusd-stable-minter"]
+	path = phusd-stable-minter
+	url = ./phusd-stable-minter

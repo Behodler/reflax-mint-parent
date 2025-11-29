@@ -1,0 +1,7 @@
+asset-mapper git@github.com:Behodler/asset-mapper.git
+flax-token git@github.com:Behodler/flax-token-v2.git
+minter git@github.com:Behodler/flax-v2-minter.git
+vault git@github.com:Behodler/reflax-yield-vault.git
+managed-liquidity git@github.com:Behodler/managed-liquidity.git
+price-management git@github.com:Behodler/reflax-price-management.git
+ 

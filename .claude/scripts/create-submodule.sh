@@ -32,12 +32,13 @@ echo "Creating dependency directories"
 mkdir -p lib/mutable
 mkdir -p lib/immutable
 
-# Create .claude/commands directory
-echo "Creating .claude/commands directory"
+# Create .claude directories
+echo "Creating .claude/commands and .claude/scripts directories"
 mkdir -p .claude/commands
+mkdir -p .claude/scripts
 
 # Create add-mutable-dependency.sh
-cat > .claude/commands/add-mutable-dependency.sh << 'SCRIPT_EOF'
+cat > .claude/scripts/add-mutable-dependency.sh << 'SCRIPT_EOF'
 #!/bin/bash
 
 # Check if an argument was provided
@@ -84,10 +85,10 @@ fi
 echo "Successfully added mutable dependency: $REPO_NAME (interfaces only)"
 SCRIPT_EOF
 
-chmod +x .claude/commands/add-mutable-dependency.sh
+chmod +x .claude/scripts/add-mutable-dependency.sh
 
 # Create add-immutable-dependency.sh
-cat > .claude/commands/add-immutable-dependency.sh << 'SCRIPT_EOF'
+cat > .claude/scripts/add-immutable-dependency.sh << 'SCRIPT_EOF'
 #!/bin/bash
 
 # Check if an argument was provided
@@ -109,10 +110,10 @@ git clone "$REPO" "$REPO_NAME"
 echo "Successfully added immutable dependency: $REPO_NAME"
 SCRIPT_EOF
 
-chmod +x .claude/commands/add-immutable-dependency.sh
+chmod +x .claude/scripts/add-immutable-dependency.sh
 
 # Create update-mutable-dependency.sh
-cat > .claude/commands/update-mutable-dependency.sh << 'SCRIPT_EOF'
+cat > .claude/scripts/update-mutable-dependency.sh << 'SCRIPT_EOF'
 #!/bin/bash
 
 # Check if an argument was provided
@@ -168,10 +169,10 @@ fi
 echo "Successfully updated mutable dependency: $DEP_NAME (interfaces only)"
 SCRIPT_EOF
 
-chmod +x .claude/commands/update-mutable-dependency.sh
+chmod +x .claude/scripts/update-mutable-dependency.sh
 
 # Create consider-change-requests.sh
-cat > .claude/commands/consider-change-requests.sh << 'SCRIPT_EOF'
+cat > .claude/scripts/consider-change-requests.sh << 'SCRIPT_EOF'
 #!/bin/bash
 
 REQUESTS_FILE="SiblingChangeRequests.json"
@@ -190,7 +191,102 @@ echo "Please review these change requests and implement them using TDD principle
 echo "If any request cannot be implemented, document the issue for the requesting submodule."
 SCRIPT_EOF
 
-chmod +x .claude/commands/consider-change-requests.sh
+chmod +x .claude/scripts/consider-change-requests.sh
+
+# Create markdown command files for slash command access
+cat > .claude/commands/add-mutable-dependency.md << 'MD_EOF'
+# add-mutable-dependency
+
+Adds a sibling submodule as a mutable dependency, exposing only interfaces.
+
+## Usage
+```bash
+.claude/scripts/add-mutable-dependency.sh <repository>
+```
+
+## Arguments
+- `repository` (required): The repository URL or path of the sibling submodule
+
+## What It Does
+1. Clones the repository to `lib/mutable/`
+2. Verifies an `src/interfaces/` directory exists
+3. Removes all implementation details, keeping only interfaces
+4. Reports success or failure
+
+## Important Notes
+- Mutable dependencies only expose interfaces and abstract contracts
+- Implementation details are automatically stripped
+- If the dependency lacks an interfaces directory, the operation fails
+MD_EOF
+
+cat > .claude/commands/add-immutable-dependency.md << 'MD_EOF'
+# add-immutable-dependency
+
+Adds an external library as an immutable dependency with full source access.
+
+## Usage
+```bash
+.claude/scripts/add-immutable-dependency.sh <repository>
+```
+
+## Arguments
+- `repository` (required): The repository URL of the external library (e.g., OpenZeppelin)
+
+## What It Does
+1. Clones the full repository to `lib/immutable/`
+2. Preserves all source code for complete access
+
+## Important Notes
+- Use this for external libraries that won't change based on sibling requirements
+- Full source code is available for these dependencies
+MD_EOF
+
+cat > .claude/commands/update-mutable-dependency.md << 'MD_EOF'
+# update-mutable-dependency
+
+Updates an existing mutable dependency to pull the latest interface changes.
+
+## Usage
+```bash
+.claude/scripts/update-mutable-dependency.sh <dependency-name>
+```
+
+## Arguments
+- `dependency-name` (required): The name of the mutable dependency in `lib/mutable/`
+
+## What It Does
+1. Reverts local changes to restore the full repository
+2. Pulls the latest changes from the remote
+3. Verifies the interfaces directory still exists
+4. Strips implementation details again, keeping only interfaces
+
+## When to Use
+- After a sibling submodule has implemented your change requests
+- To sync with the latest interface definitions
+MD_EOF
+
+cat > .claude/commands/consider-change-requests.md << 'MD_EOF'
+# consider-change-requests
+
+Reviews and processes incoming change requests from sibling submodules.
+
+## Usage
+```bash
+.claude/scripts/consider-change-requests.sh
+```
+
+## What It Does
+1. Checks for `SiblingChangeRequests.json` in the current directory
+2. Displays the contents of any pending change requests
+3. Prompts for review and implementation using TDD principles
+
+## Workflow
+1. Review the requested changes
+2. Implement changes following TDD (write tests first)
+3. Update interfaces as needed
+4. Commit and push changes
+5. Notify requesting submodules to update their dependencies
+MD_EOF
 
 # Create CLAUDE.md for the submodule with enhanced dependency management
 echo "Creating CLAUDE.md for submodule"
@@ -252,10 +348,12 @@ When a feature requires changes to a mutable dependency:
 
 ### Available Commands
 
-- \`.claude/commands/add-mutable-dependency.sh <repo>\` - Add a mutable dependency (sibling)
-- \`.claude/commands/add-immutable-dependency.sh <repo>\` - Add an immutable dependency
-- \`.claude/commands/update-mutable-dependency.sh <name>\` - Update a mutable dependency
-- \`.claude/commands/consider-change-requests.sh\` - Review and implement sibling change requests
+Use these as slash commands (e.g., \`/add-mutable-dependency\`) or run the scripts directly:
+
+- \`.claude/scripts/add-mutable-dependency.sh <repo>\` - Add a mutable dependency (sibling)
+- \`.claude/scripts/add-immutable-dependency.sh <repo>\` - Add an immutable dependency
+- \`.claude/scripts/update-mutable-dependency.sh <name>\` - Update a mutable dependency
+- \`.claude/scripts/consider-change-requests.sh\` - Review and implement sibling change requests
 
 ## Project Structure
 

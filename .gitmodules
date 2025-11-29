@@ -28,3 +28,6 @@
 [submodule "phusd-stable-minter"]
 	path = phusd-stable-minter
 	url = ./phusd-stable-minter
+[submodule "phlimbo-ea"]
+	path = phlimbo-ea
+	url = ./phlimbo-ea

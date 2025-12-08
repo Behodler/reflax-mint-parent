@@ -217,6 +217,8 @@ Adds a sibling submodule as a mutable dependency, exposing only interfaces.
 - Mutable dependencies only expose interfaces and abstract contracts
 - Implementation details are automatically stripped
 - If the dependency lacks an interfaces directory, the operation fails
+
+ARGUMENTS: $ARGUMENTS
 MD_EOF
 
 cat > .claude/commands/add-immutable-dependency.md << 'MD_EOF'
@@ -239,6 +241,8 @@ Adds an external library as an immutable dependency with full source access.
 ## Important Notes
 - Use this for external libraries that won't change based on sibling requirements
 - Full source code is available for these dependencies
+
+ARGUMENTS: $ARGUMENTS
 MD_EOF
 
 cat > .claude/commands/update-mutable-dependency.md << 'MD_EOF'
@@ -263,6 +267,8 @@ Updates an existing mutable dependency to pull the latest interface changes.
 ## When to Use
 - After a sibling submodule has implemented your change requests
 - To sync with the latest interface definitions
+
+ARGUMENTS: $ARGUMENTS
 MD_EOF
 
 cat > .claude/commands/consider-change-requests.md << 'MD_EOF'
@@ -286,6 +292,8 @@ Reviews and processes incoming change requests from sibling submodules.
 3. Update interfaces as needed
 4. Commit and push changes
 5. Notify requesting submodules to update their dependencies
+
+ARGUMENTS: $ARGUMENTS
 MD_EOF
 
 # Create CLAUDE.md for the submodule with enhanced dependency management

@@ -31,3 +31,9 @@
 [submodule "phlimbo-ea"]
 	path = phlimbo-ea
 	url = ./phlimbo-ea
+[submodule "pauser"]
+	path = pauser
+	url = ./pauser
+[submodule "stable-yield-accumulator"]
+	path = stable-yield-accumulator
+	url = ./stable-yield-accumulator
